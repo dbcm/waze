@@ -6,7 +6,7 @@ Most of them needs the [Tempermonkey Chrome plugin](https://chrome.google.com/we
 
 
 ## [unready](unready/unready.js) [TM plugin]
-- the [Unready Events](https://www.waze.com/events/unready) page don't show the locations, this'll to the trick 
+- [Unready Events](https://www.waze.com/events/unready) page don't show events location, this'll add it, in *red* 
 ![My Avatar][unready]
 
 
