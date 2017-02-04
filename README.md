@@ -18,13 +18,13 @@ Most of them needs the [Tempermonkey Chrome plugin](https://chrome.google.com/we
 
 ---
 
-## [blame](blame/blame.js) [copy&past javascript console (TM maybe)]
-- Time to time we need to understant what happened in a specific area, usually lock with higher level
-- like git blame, with this script we can understand what happened, how did what...
+## [blame](blame/blame.js) [TM plugin]
+- Time to time we need to understant what happened in a specific area, usually locked with higher rank level
+- like git blame, with this script we can see how did what...
 ![blame example][blame]
 
 
- Copy the content of this script to the javascript console (change user ids and names):
+ Add this URL to your Tampermonkey:
 
  ```
  http://dbcm.github.io/waze/blame/blame.js
