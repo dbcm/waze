@@ -23,6 +23,8 @@ reusable code for all WME tools i'm building
 		options = options || {};
 
 		this.debug = options.debug;
+
+		this.app = options.app || 'DUH';
 	};
 
 	/*
@@ -133,6 +135,16 @@ reusable code for all WME tools i'm building
 			color += letters[Math.floor(Math.random() * 16)];
 		}
 		return color;
+	}
+
+	/*
+		log stuff
+	*/
+	WMEutils.prototype.log = function(msg) {
+		var self = this;
+
+		var now = Date.now();
+		console.log("[" + this.app + "] " + now + " : " + msg);
 	}
 
 
