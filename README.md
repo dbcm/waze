@@ -30,6 +30,21 @@ Most of them needs the [Tempermonkey Chrome plugin](https://chrome.google.com/we
  http://dbcm.github.io/waze/blame/blame.js
  ```
 
+---
+
+## [valfix](valfix/valfix.js) [TM plugin]
+- WME Validator 1.1.20 is not working with the last WME, this is a quick fix until the author fixes it
+- You need to load this script before WME Validator
+![valfix example][valfix]
+
+
+ Add this URL to your Tampermonkey:
+
+ ```
+ http://dbcm.github.io/waze/valfix/valfix.js
+ ```
+
 
 [unready]: unready/unready.png
 [blame]: blame/blame.png
+[valfix]: valfix/valfix.png
