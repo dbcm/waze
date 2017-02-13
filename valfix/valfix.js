@@ -102,6 +102,13 @@
 
 })();
 
+if (typeof I18n.translations.en == 'undefined') {
+	I18n.translations["en"] = {
+			"layers": {
+					"name": {}
+			}
+	};
+}
 // create proxy for require
 var reqold = window.require;
 window.require = function(e) {
