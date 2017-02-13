@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Validator fix
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  hack to put WME Validator 1.1.20 working with last WME
 // @author       Delfim Machado - dbcm@profundos.org, Firefox fixes by Glodenox
 // @match        https://beta.waze.com/*editor/*
