@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Waze Map Editor - Validator fix
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  hack to put WME Validator 1.1.20 working with last WME
-// @author       Delfim Machado - dbcm@profundos.org
+// @author       Delfim Machado - dbcm@profundos.org, Firefox fixes by Glodenox
 // @match        https://beta.waze.com/*editor/*
 // @match        https://www.waze.com/*editor/*
 // @exclude      https://www.waze.com/*user/*editor/*
@@ -102,13 +102,11 @@
 
 })();
 
-// ove
-if (typeof reqold === "undefined") {
-	var reqold = require;
-	require = function(e) {
-		if (e === 'Waze/Renderer/ExtendedSVG') {
-			return this.ExtendedSVG
-		}
-		return reqold(e);
+// create proxy for require
+var reqold = window.require;
+window.require = function(e) {
+	if (e === 'Waze/Renderer/ExtendedSVG') {
+		return this.ExtendedSVG
 	}
+	return reqold(e);
 }
