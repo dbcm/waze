@@ -4,8 +4,9 @@
 // @version      1.0.0
 // @description  hack to put WME Validator 1.1.20 working with last WME
 // @author       Delfim Machado - dbcm@profundos.org
-// @match        https://*.waze.com/editor/
-// @match        https://*.waze.com/*/editor/
+// @match        https://beta.waze.com/*editor/*
+// @match        https://www.waze.com/*editor/*
+// @exclude      https://www.waze.com/*user/*editor/*
 // @grant        none
 // ==/UserScript==
 
