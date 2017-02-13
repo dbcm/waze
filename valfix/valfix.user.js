@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         Waze Map Editor - Validator fix
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  hack to put WME Validator 1.1.20 working with last WME
-// @author       Delfim Machado - dbcm@profundos.org, Firefox fixes by Glodenox
+// @author       Delfim Machado - dbcm@profundos.org
+// @author       Glodenox - https://github.com/Glodenox
 // @match        https://beta.waze.com/*editor/*
 // @match        https://www.waze.com/*editor/*
 // @exclude      https://www.waze.com/*user/*editor/*
@@ -16,14 +17,13 @@
 	var n;
 
 	var s_defined = function(e) {
-		return "undefined" != typeof e && null !== e
+		return "undefined" != typeof e && null !== e;
 	};
-
 
 	n = OpenLayers.Class(OpenLayers.Renderer.SVG, {
 		initialize: function() {
 			OpenLayers.Renderer.SVG.prototype.initialize.apply(this, arguments),
-				this.supportUse = !0
+				this.supportUse = !0;
 		},
 		setAnimation: function(e, t) {
 			var i = document.createElementNS(this.xmlns, "animate");
@@ -35,7 +35,7 @@
 				t.begin && i.setAttributeNS(null, "begin", t.begin),
 				t.id && i.setAttributeNS(null, "id", t.id),
 				t.fill && i.setAttributeNS(null, "fill", t.fill),
-				e.appendChild(i)
+				e.appendChild(i);
 		},
 		setStyle: function(e, t, i) {
 			if (OpenLayers.Renderer.SVG.prototype.setStyle.apply(this, arguments),
@@ -57,20 +57,20 @@
 						r.appendChild(n)),
 					r.appendChild(e),
 					r._style = t,
-					e = r
+					e = r;
 			}
-			return e
+			return e;
 		},
 		importSymbol: function(e) {
 			return this.symbolMetrics = {},
 				this.symbolMetrics[e] = [0, 0, 0],
-				e
+				e;
 		},
 		getNodeType: function(e, t) {
 			var i;
 			return i = OpenLayers.Renderer.SVG.prototype.getNodeType.apply(this, arguments),
 				"circle" === i && s_defined(t.rx) && s_defined(t.ry) && (i = "ellipse"),
-				i
+				i;
 		},
 		dashStyle: function(e, t) {
 			var i;
@@ -92,28 +92,29 @@
 				case "longdashdot":
 					return [8 * i, 4 * i, 1, 4 * i].join();
 				default:
-					return OpenLayers.String.trim(n).replace(/\s+/g, ",")
+					return OpenLayers.String.trim(n).replace(/\s+/g, ",");
 			}
 		},
 		CLASS_NAME: "Waze.Renderer.ExtendedSVG"
-	})
+	});
 
 	window.ExtendedSVG = n;
-
 })();
 
+// translations hack
 if (typeof I18n.translations.en == 'undefined') {
 	I18n.translations["en"] = {
-			"layers": {
-					"name": {}
-			}
+		"layers": {
+			"name": {}
+		}
 	};
 }
+
 // create proxy for require
 var reqold = window.require;
 window.require = function(e) {
 	if (e === 'Waze/Renderer/ExtendedSVG') {
-		return this.ExtendedSVG
+		return this.ExtendedSVG;
 	}
 	return reqold(e);
-}
+};
