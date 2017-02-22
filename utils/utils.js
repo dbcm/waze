@@ -29,14 +29,16 @@ reusable code for all WME tools i'm building
         this.init(options);
     };
 
-    WMEutils.prototype.init = function(options) {
+    WMEutils.prototype.init = function(opt) {
         this._VERSION = 0.1;
 
-        options = options || {};
+        opt = opt || {};
 
-        this.debug = options.debug;
+        this.debug = opt.debug;
 
-        this.app = options.app || 'DUH';
+        this.app = opt.app || 'DUH';
+        this.uid = opt.uid || '___';
+        this.version = opt.version || '0.0.666';
     };
 
     /*
@@ -107,30 +109,30 @@ reusable code for all WME tools i'm building
             }
         }
     }
-    
+
     /*
     	f = ARRAY of functions
     */
     WMEutils.prototype.loopVenues = function(f) {
-        for (var venId in Waze.model.venues.objects) {
-            var ven = Waze.model.venues.get(venId);
+            for (var venId in Waze.model.venues.objects) {
+                var ven = Waze.model.venues.get(venId);
 
-            if (!this.isOnScreen(ven)) {
-                continue;
-            }
+                if (!this.isOnScreen(ven)) {
+                    continue;
+                }
 
-            if (!this.canEdit(ven)) {
-                continue;
-            }
+                if (!this.canEdit(ven)) {
+                    continue;
+                }
 
-            for (var i = 0; i < f.length; i++) {
-                f[i](ven);
+                for (var i = 0; i < f.length; i++) {
+                    f[i](ven);
+                }
             }
         }
-    }
-    /*
-    	if the object visible
-    */
+        /*
+        	if the object visible
+        */
     WMEutils.prototype.isOnScreen = function(obj) {
         if (obj.geometry) {
             return (Waze.map.getExtent().intersectsBounds(obj.geometry.getBounds()));
@@ -168,6 +170,21 @@ reusable code for all WME tools i'm building
         }
         return color;
     }
+
+    /*
+    	config stuff
+    */
+    WMEutils.prototype.loadConfig = function() {
+        var self = this;
+
+        return JSON.parse(localStorage.getItem(self.uid + "_config"));
+    }
+    WMEutils.prototype.saveConfig = function(config) {
+        var self = this;
+        
+        return localStorage.setItem(self.uid + "_config", JSON.stringify(config));
+    }
+
 
     /*
     	log stuff
