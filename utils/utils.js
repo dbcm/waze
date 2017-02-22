@@ -105,7 +105,8 @@ reusable code for all WME tools i'm building
             }
 
             for (var i = 0; i < f.length; i++) {
-                f[i](seg);
+                if (f[i])
+                    f[i](seg);
             }
         }
     }
@@ -126,7 +127,8 @@ reusable code for all WME tools i'm building
                 }
 
                 for (var i = 0; i < f.length; i++) {
-                    f[i](ven);
+                    if (f[i])
+                        f[i](ven);
                 }
             }
         }
@@ -181,7 +183,7 @@ reusable code for all WME tools i'm building
     }
     WMEutils.prototype.saveConfig = function(config) {
         var self = this;
-        
+
         return localStorage.setItem(self.uid + "_config", JSON.stringify(config));
     }
 
