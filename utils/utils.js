@@ -107,7 +107,27 @@ reusable code for all WME tools i'm building
             }
         }
     }
+    
+    /*
+    	f = ARRAY of functions
+    */
+    WMEutils.prototype.loopVenues = function(f) {
+        for (var venId in Waze.model.venues.objects) {
+            var ven = Waze.model.venues.get(venId);
 
+            if (!this.isOnScreen(ven)) {
+                continue;
+            }
+
+            if (!this.canEdit(ven)) {
+                continue;
+            }
+
+            for (var i = 0; i < f.length; i++) {
+                f[i](ven);
+            }
+        }
+    }
     /*
     	if the object visible
     */
