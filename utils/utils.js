@@ -174,6 +174,23 @@ reusable code for all WME tools i'm building
     }
 
     /*
+        obj = object to highlight, can be and segment or a place (landmark/venue)
+        color = highlight color
+    */
+    WMEutils.prototype.highlightObject = function(obj, color) {
+        return new OpenLayers.Feature.Vector(obj.geometry.clone(), {}, {
+            strokeColor: color,
+            strokeDashstyle: "none",
+            strokeLinecap: "round",
+            strokeWidth: 30,
+            strokeOpacity: 0.5,
+            fill: true,
+            fillColor: color,
+            fillOpacity: 0.2
+        });
+    };
+
+    /*
     	options stuff
     */
     WMEutils.prototype.loadOptions = function() {
