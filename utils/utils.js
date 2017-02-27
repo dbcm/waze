@@ -174,19 +174,18 @@ reusable code for all WME tools i'm building
     }
 
     /*
-    	config stuff
+    	options stuff
     */
-    WMEutils.prototype.loadConfig = function() {
+    WMEutils.prototype.loadOptions = function() {
         var self = this;
 
-        return JSON.parse(localStorage.getItem(self.uid + "_config"));
+        return JSON.parse(localStorage.getItem(self.uid + "_options"));
     }
-    WMEutils.prototype.saveConfig = function(config) {
+    WMEutils.prototype.saveOptions = function(options) {
         var self = this;
 
-        return localStorage.setItem(self.uid + "_config", JSON.stringify(config));
+        return localStorage.setItem(self.uid + "_options", JSON.stringify(options));
     }
-
 
     /*
     	log stuff
