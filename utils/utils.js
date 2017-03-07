@@ -63,6 +63,10 @@ reusable code for all WME tools i'm building
             };
         }
 
+        if (document.getElementById("t" + o.id)) {
+            return;
+        };
+
         var addon = document.createElement('div');
         addon.innerHTML += '<div><div class="side-panel-section"><h4>' + o.title + '</h4><br>';
         addon.innerHTML += o.content;
@@ -74,12 +78,12 @@ reusable code for all WME tools i'm building
         var newtab = document.createElement('li');
         newtab.id = "t" + o.id;
         newtab.innerHTML = '<a title="' + o.desc + '" href="#sidepanel-' + o.id + '" data-toggle="tab">' + o.name + '</a>';
-        mdk("t" + o.id);
+        //mdk("t" + o.id);
         navTabs.appendChild(newtab);
 
         addon.id = "sidepanel-" + o.id;
         addon.className = "tab-pane";
-        mdk("sidepanel-" + o.id);
+        //mdk("sidepanel-" + o.id);
         tabContent.appendChild(addon);
 
 
