@@ -150,8 +150,8 @@ reusable code for all WME tools i'm building
     	can i edit this object
     */
     WMEutils.prototype.canEdit = function(obj) {
-        return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) || seg.hasClosures() || seg.isUpdated() || this.isPortugal(obj);
-    }
+        return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) || obj.hasClosures() || obj.isUpdated() || this.isPortugal(obj);
+    };
 
     /*
     	is this object in Portugal
@@ -180,8 +180,9 @@ reusable code for all WME tools i'm building
     /*
         obj = object to highlight, can be and segment or a place (landmark/venue)
         color = highlight color
+        bgColor = background color, if null, defaults to color
     */
-    WMEutils.prototype.highlightObject = function(obj, color) {
+    WMEutils.prototype.highlightObject = function(obj, color, bgColor) {
         return new OpenLayers.Feature.Vector(obj.geometry.clone(), {}, {
             strokeColor: color,
             strokeDashstyle: "none",
@@ -189,7 +190,7 @@ reusable code for all WME tools i'm building
             strokeWidth: 30,
             strokeOpacity: 0.5,
             fill: true,
-            fillColor: color,
+            fillColor: bgColor || color,
             fillOpacity: 0.2
         });
     };
@@ -226,4 +227,4 @@ reusable code for all WME tools i'm building
     }
 
     root.WMEutils = WMEutils;
-})(this);
+})(window);
