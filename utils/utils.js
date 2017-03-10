@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -86,11 +86,6 @@ reusable code for all WME tools i'm building
         //mdk("sidepanel-" + o.id);
         tabContent.appendChild(addon);
 
-
-        return {
-            newtab,
-            addon
-        };
     };
 
     /*
@@ -150,7 +145,10 @@ reusable code for all WME tools i'm building
     	can i edit this object
     */
     WMEutils.prototype.canEdit = function(obj) {
-        return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) || obj.hasClosures() || obj.isUpdated() || this.isPortugal(obj);
+        if (obj.type === 'segment')
+            return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) || obj.hasClosures() || obj.isUpdated();
+        if (obj.type === 'venue')
+            return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) || obj.isUpdated();
     };
 
     /*
