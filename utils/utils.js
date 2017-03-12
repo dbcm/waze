@@ -176,6 +176,20 @@ reusable code for all WME tools i'm building
     }
 
     /*
+        obj = must be a segment OBJ
+    */
+    WMEutils.prototype.isDrivable = function(obj) {
+        if (obj.type === 'segment') {
+            var drivable = [1, 2, 3, 4, 6, 7, 8, 17, 15, 20];
+
+            if (drivable.includes(obj.attributes.roadType)) {
+                return true;
+            }
+        };
+        return false;
+    };
+
+    /*
         obj = object to highlight, can be and segment or a place (landmark/venue)
         color = highlight color
         bgColor = background color, if null, defaults to color
