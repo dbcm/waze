@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -237,6 +237,44 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.onBeta = function() {
         return -1 !== window.location.href.indexOf("beta");
     }
+
+    /*
+    	add menu layer
+    
+        section = [issues, places, road, display]
+        name = layer name
+        uid = internal id
+        callback = function() {...}
+        layer = OL Layer
+    */
+    WMEutils.prototype.addMenuLayer = function(o) {
+        // from WME Street View Availability
+        var roadGroupSelector = document.getElementById('layer-switcher-group_' + o.section);
+        if (roadGroupSelector !== null) {
+            var roadGroup = roadGroupSelector.parentNode.parentNode.querySelector('.children');
+            var toggler = document.createElement('li');
+            var togglerContainer = document.createElement('div');
+            togglerContainer.className = 'controls-container toggler';
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = 'layer-switcher-item_' + o.uid;
+            checkbox.className = 'toggle';
+            checkbox.checked = true;
+            checkbox.addEventListener('click', function(e) {
+                o.layer.setVisibility(e.target.checked);
+            });
+            togglerContainer.appendChild(checkbox);
+            var label = document.createElement('label');
+            label.htmlFor = checkbox.id;
+            var labelText = document.createElement('span');
+            labelText.className = 'label-text';
+            labelText.appendChild(document.createTextNode(o.name));
+            label.appendChild(labelText);
+            togglerContainer.appendChild(label);
+            toggler.appendChild(togglerContainer);
+            roadGroup.appendChild(toggler);
+        }
+    };
 
     root.WMEutils = WMEutils;
 })(window);
