@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -114,26 +114,49 @@ reusable code for all WME tools i'm building
     	f = ARRAY of functions
     */
     WMEutils.prototype.loopVenues = function(f) {
-            for (var venId in Waze.model.venues.objects) {
-                var ven = Waze.model.venues.get(venId);
+        for (var venId in Waze.model.venues.objects) {
+            var ven = Waze.model.venues.get(venId);
 
-                if (!this.isOnScreen(ven)) {
-                    continue;
-                }
+            if (!this.isOnScreen(ven)) {
+                continue;
+            }
 
-                if (!this.canEdit(ven)) {
-                    continue;
-                }
+            if (!this.canEdit(ven)) {
+                continue;
+            }
 
-                for (var i = 0; i < f.length; i++) {
-                    if (f[i])
-                        f[i](ven);
-                }
+            for (var i = 0; i < f.length; i++) {
+                if (f[i])
+                    f[i](ven);
             }
         }
-        /*
-        	if the object visible
-        */
+    };
+
+    /*
+    	f = ARRAY of functions
+    */
+    WMEutils.prototype.loopNodes = function(f) {
+        for (var nodId in Waze.model.nodes.objects) {
+            var nod = Waze.model.nodes.get(nodId);
+
+            if (!this.isOnScreen(nod)) {
+                continue;
+            }
+
+            if (!this.canEdit(nod)) {
+                continue;
+            }
+
+            for (var i = 0; i < f.length; i++) {
+                if (f[i])
+                    f[i](nod);
+            }
+        }
+    };
+
+    /*
+    	if the object visible
+    */
     WMEutils.prototype.isOnScreen = function(obj) {
         if (obj.geometry) {
             return (Waze.map.getExtent().intersectsBounds(obj.geometry.getBounds()));
@@ -149,6 +172,8 @@ reusable code for all WME tools i'm building
             return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) || obj.hasClosures() || obj.isUpdated();
         if (obj.type === 'venue')
             return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) || obj.isUpdated();
+        if (obj.type === 'node')
+            return obj.areConnectionsEditable() || obj.isUpdated();
     };
 
     /*
@@ -203,7 +228,13 @@ reusable code for all WME tools i'm building
             strokeOpacity: 0.5,
             fill: true,
             fillColor: bgColor || color,
-            fillOpacity: 0.2
+            fillOpacity: 0.2,
+            pointRadius: 6,
+            fontColor: 'white',
+            labelOutlineColor: color,
+            labelOutlineWidth: 4,
+            labelAlign: 'left',
+            label: null
         });
     };
 
