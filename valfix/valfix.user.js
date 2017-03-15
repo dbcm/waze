@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Validator fix
 // @namespace    http://tampermonkey.net/
-// @version      1.0.3
+// @version      1.0.4
 // @description  hack to put WME Validator 1.1.20 working with last WME
 // @author       Delfim Machado - dbcm@profundos.org
 // @author       Glodenox - https://github.com/Glodenox
@@ -130,10 +130,11 @@ var utils = new WMEutils({
     version: '1.0.3'
 });
 
-
-utils.addMenuLayer({
-    section: 'display',
-    name: 'Validator',
-    uid: 'validator',
-    layer: Waze.map.getLayerByUniqueName('WMEValidator')
-});
+setTimeout(function() {
+    utils.addMenuLayer({
+        section: 'display',
+        name: 'Validator',
+        uid: 'validator',
+        layer: Waze.map.getLayerByUniqueName('WMEValidator')
+    })
+}, 5000);
