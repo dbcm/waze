@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.3
+// @version      1.0.4
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -219,12 +219,12 @@ reusable code for all WME tools i'm building
         color = highlight color
         bgColor = background color, if null, defaults to color
     */
-    WMEutils.prototype.highlightObject = function(obj, color, bgColor) {
+    WMEutils.prototype.highlightObject = function(obj, color, bgColor, label) {
         return new OpenLayers.Feature.Vector(obj.geometry.clone(), {}, {
             strokeColor: color,
             strokeDashstyle: "none",
             strokeLinecap: "round",
-            strokeWidth: 30,
+            strokeWidth: 15,
             strokeOpacity: 0.5,
             fill: true,
             fillColor: bgColor || color,
@@ -233,8 +233,11 @@ reusable code for all WME tools i'm building
             fontColor: 'white',
             labelOutlineColor: color,
             labelOutlineWidth: 4,
-            labelAlign: 'left',
-            label: null
+            labelAlign: 'cm',
+            label: label || null,
+            rotation: 0.785398164,
+            textAlign: 'center',
+            textBaseline: 'middle'
         });
     };
 
