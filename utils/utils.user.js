@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.4
+// @version      1.0.5
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -230,8 +230,8 @@ reusable code for all WME tools i'm building
             fillColor: bgColor || color,
             fillOpacity: 0.2,
             pointRadius: 6,
-            fontColor: 'white',
-            labelOutlineColor: color,
+            fontColor: color,
+            labelOutlineColor: bgColor || 'black',
             labelOutlineWidth: 4,
             labelAlign: 'cm',
             label: label || null,
