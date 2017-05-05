@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.5
+// @version      1.0.6
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -86,12 +86,15 @@ reusable code for all WME tools i'm building
         //mdk("sidepanel-" + o.id);
         tabContent.appendChild(addon);
 
+        return true;
     };
 
     /*
     	f = ARRAY of functions
     */
     WMEutils.prototype.loopSegments = function(f) {
+        var ret = {};
+
         for (var segId in Waze.model.segments.objects) {
             var seg = Waze.model.segments.get(segId);
 
@@ -103,17 +106,27 @@ reusable code for all WME tools i'm building
                 continue;
             }
 
+            var re = [];
             for (var i = 0; i < f.length; i++) {
-                if (f[i])
-                    f[i](seg);
+                if (f[i]) {
+                    var r = f[i](seg);
+                    if (r && r.id)
+                        re.push(r);
+                };
             }
+            if (re.length > 0)
+                ret[seg.attributes.id] = re;
         }
+
+        return ret;
     }
 
     /*
     	f = ARRAY of functions
     */
     WMEutils.prototype.loopVenues = function(f) {
+        var ret = {};
+
         for (var venId in Waze.model.venues.objects) {
             var ven = Waze.model.venues.get(venId);
 
@@ -125,17 +138,27 @@ reusable code for all WME tools i'm building
                 continue;
             }
 
+            var re = [];
             for (var i = 0; i < f.length; i++) {
-                if (f[i])
-                    f[i](ven);
+                if (f[i]) {
+                    var r = f[i](ven);
+                    if (r && r.id)
+                        re.push(r);
+                }
             }
+            if (re.length > 0)
+                ret[ven.attributes.id] = re;
         }
+
+        return ret;
     };
 
     /*
     	f = ARRAY of functions
     */
     WMEutils.prototype.loopNodes = function(f) {
+        var ret = {};
+
         for (var nodId in Waze.model.nodes.objects) {
             var nod = Waze.model.nodes.get(nodId);
 
@@ -147,11 +170,19 @@ reusable code for all WME tools i'm building
                 continue;
             }
 
+            var re = [];
             for (var i = 0; i < f.length; i++) {
-                if (f[i])
-                    f[i](nod);
+                if (f[i]) {
+                    var r = f[i](nod);
+                    if (r && r.id)
+                        re.push(r);
+                }
             }
+            if (re.length > 0)
+                ret[nod.attributes.id] = re;
         }
+
+        return ret;
     };
 
     /*
@@ -168,12 +199,17 @@ reusable code for all WME tools i'm building
     	can i edit this object
     */
     WMEutils.prototype.canEdit = function(obj) {
+        if (obj.isDeleted())
+            return false;
+
         if (obj.type === 'segment')
-            return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) || obj.hasClosures() || obj.isUpdated();
+            return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) && !obj.hasClosures(); // || obj.isUpdated();
         if (obj.type === 'venue')
-            return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) || obj.isUpdated();
+            return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) && obj.areExternalProvidersEditable(); // || obj.isUpdated();
         if (obj.type === 'node')
-            return obj.areConnectionsEditable() || obj.isUpdated();
+            return !obj.isConnectedToBigJunction() && obj.areConnectionsEditable() &&
+                obj.isAllowedToMoveNode() &&
+                obj.isAllowed(obj.PERMISSIONS.DELETE); // obj.isUpdated();
     };
 
     /*
