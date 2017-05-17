@@ -18,7 +18,7 @@ Most of them needs the [Tempermonkey Chrome plugin](https://chrome.google.com/we
 
 ---
 
-## [blame](blame/blame.js) [TM plugin]
+## [blame](blame/blame.user.js) [TM plugin]
 - Time to time we need to understant what happened in a specific area, usually locked with higher rank level
 - like git blame, with this script we can see how did what...
 ![blame example][blame]
@@ -27,7 +27,7 @@ Most of them needs the [Tempermonkey Chrome plugin](https://chrome.google.com/we
  Add this URL to your Tampermonkey:
 
  ```
- http://dbcm.github.io/waze/blame/blame.js
+ http://dbcm.github.io/waze/blame/blame.user.js
  ```
 
 ---

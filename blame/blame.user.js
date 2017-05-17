@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Waze Map Editor - Blame
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  show on WME what this users did in the last X days
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
 // @match        https://www.waze.com/*editor/*
 // @exclude      https://www.waze.com/*user/*editor/*
 // @grant        none
-// @require      https://dbcm.github.com/waze/utils/utils.js
+// @require      https://dbcm.github.io/waze/utils/utils.user.js
 // ==/UserScript==
 
 'use strict';
