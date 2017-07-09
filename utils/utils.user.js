@@ -39,6 +39,7 @@ reusable code for all WME tools i'm building
         this.app = opt.app || 'DUH';
         this.uid = opt.uid || '___';
         this.version = opt.version || '0.0.666';
+        this.doLog = opt.hasOwnProperty('doLog') ? opt.doLog : true;
     };
 
     /*
@@ -297,9 +298,58 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.log = function(msg) {
         var self = this;
 
+        if (!this.doLog)
+            return;
+
         var now = Date.now();
         console.log("[" + this.app + "] " + now + " : " + msg);
-    }
+    };
+
+    /*
+    	set attributes to objects
+    */
+    WMEutils.prototype.setAttributes = function(obj, attr) {
+        var WazeActionUpdateObject = window.require("Waze/Action/UpdateObject");
+        var WazeActionMultiAction = window.require("Waze/Action/MultiAction");
+
+        var action = [];
+        action.push(new WazeActionUpdateObject(obj, attr));
+        Waze.model.actionManager.add(new WazeActionMultiAction(action));
+    };
+
+    /*
+    	get normalized lock rank
+    */
+    WMEutils.prototype.getLockRank = function(obj) {
+        var rank = obj.attributes.lockRank;
+
+        // support for the automatic lock
+        if (obj.attributes.rank > rank)
+            rank = obj.attributes.rank;
+
+        if (!rank) {
+            rank = 1;
+        } else {
+            rank++;
+        }
+        return rank;
+    };
+
+    /*
+    	get road name
+    */
+    WMEutils.prototype.getRoadName = function(obj) {
+        var attr = obj.attributes;
+        var segStreetID = attr.primaryStreetID;
+        if (segStreetID !== null && segStreetID !== -100) {
+            var street = Waze.model.streets.get(segStreetID);
+
+            if (!street)
+                return '';
+
+            return street.name || '';
+        };
+    };
 
     /*
     	returns true if you are using beta editor
