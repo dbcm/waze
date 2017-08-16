@@ -204,7 +204,7 @@ reusable code for all WME tools i'm building
             return false;
 
         if (obj.type === 'segment')
-            return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) && !obj.hasClosures(); // || obj.isUpdated();
+            return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) && !obj.hasClosures() && !obj.isInBigJunction(); // || obj.isUpdated();
         if (obj.type === 'venue')
             return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) && obj.areExternalProvidersEditable(); // || obj.isUpdated();
         if (obj.type === 'node')
@@ -350,6 +350,22 @@ reusable code for all WME tools i'm building
             return street.name || '';
         };
     };
+
+    /*
+        returns 1, 2 or 3 based on segment direction
+    */
+    WMEutils.prototype.getDirection = function(obj) {
+        var attr = obj.attributes;
+
+        var val = 0;
+        if (attr.fwdDirection)
+            val += 1;
+
+        if (attr.revDirection)
+            val += 2;
+
+        return val;
+    }
 
     /*
     	returns true if you are using beta editor
