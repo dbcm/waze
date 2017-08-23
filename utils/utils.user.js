@@ -111,8 +111,20 @@ reusable code for all WME tools i'm building
             for (var i = 0; i < f.length; i++) {
                 if (f[i]) {
                     var r = f[i](seg);
-                    if (r && r.id)
-                        re.push(r);
+                    if (
+                        r && (
+                            Array.isArray(r) ?
+                            r.every(function(r) {
+                                return r.id;
+                            }) :
+                            r.id
+                        )
+                    ) {
+                        if (!Array.isArray(r))
+                            re.push(r);
+                        else
+                            re = [...re, ...r];
+                    }
                 };
             }
             if (re.length > 0)
