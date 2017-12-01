@@ -202,6 +202,8 @@ reusable code for all WME tools i'm building
     	if the object visible
     */
     WMEutils.prototype.isOnScreen = function(obj) {
+        if (!obj)
+            return false;
         if (obj.geometry) {
             return (Waze.map.getExtent().intersectsBounds(obj.geometry.getBounds()));
         }
@@ -216,7 +218,7 @@ reusable code for all WME tools i'm building
             return false;
 
         if (obj.type === 'segment')
-            return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) && !obj.hasClosures() && !obj.isInBigJunction(); // || obj.isUpdated();
+            return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) && !obj.hasClosures() && obj.isAllowed(obj.PERMISSIONS.EDIT_PROPERTIES) && !obj.isInBigJunction(); // || obj.isUpdated();
         if (obj.type === 'venue')
             return obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) && obj.areExternalProvidersEditable(); // || obj.isUpdated();
         if (obj.type === 'node')
@@ -378,6 +380,18 @@ reusable code for all WME tools i'm building
 
         return val;
     }
+
+
+    /*
+    	returns true if the segment if from a roundabout
+    */
+    WMEutils.prototype.isRoundabout = function(seg) {
+        if (seg.attributes.junctionID !== null && seg.attributes.junctionID !== undefined)
+            return true;
+        return false;
+
+    };
+
 
     /*
     	returns true if you are using beta editor
