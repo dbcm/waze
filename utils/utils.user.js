@@ -396,14 +396,15 @@ reusable code for all WME tools i'm building
     /*
     	returns top city name
     */
-    WMEutils.prototype.getTopCity = function() {
+    WMEutils.prototype.getTopCityName = function() {
         var topCityId = W.model.segments.topCityID;
-        var topCity;
         if (topCityId) {
-            topCity = W.model.cities.get(topCityId);
+            var topCity = W.model.cities.get(topCityId);
+            if (topCity) {
+                return topCity.attributes.name;
+            }
         }
-        
-        return topCity.attributes.name;
+        return null;
     }
 
 
