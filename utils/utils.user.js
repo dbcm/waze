@@ -96,8 +96,8 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.loopSegments = function(f) {
         var ret = {};
 
-        for (var segId in Waze.model.segments.objects) {
-            var seg = Waze.model.segments.get(segId);
+        for (var segId in W.model.segments.objects) {
+            var seg = W.model.segments.get(segId);
 
             if (!this.isOnScreen(seg)) {
                 continue;
@@ -140,8 +140,8 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.loopVenues = function(f) {
         var ret = {};
 
-        for (var venId in Waze.model.venues.objects) {
-            var ven = Waze.model.venues.get(venId);
+        for (var venId in W.model.venues.objects) {
+            var ven = W.model.venues.get(venId);
 
             if (!this.isOnScreen(ven)) {
                 continue;
@@ -172,8 +172,8 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.loopNodes = function(f) {
         var ret = {};
 
-        for (var nodId in Waze.model.nodes.objects) {
-            var nod = Waze.model.nodes.get(nodId);
+        for (var nodId in W.model.nodes.objects) {
+            var nod = W.model.nodes.get(nodId);
 
             if (!this.isOnScreen(nod)) {
                 continue;
@@ -205,7 +205,7 @@ reusable code for all WME tools i'm building
         if (!obj)
             return false;
         if (obj.geometry) {
-            return (Waze.map.getExtent().intersectsBounds(obj.geometry.getBounds()));
+            return (W.map.getExtent().intersectsBounds(obj.geometry.getBounds()));
         }
         return false;
     }
@@ -232,7 +232,7 @@ reusable code for all WME tools i'm building
     */
     WMEutils.prototype.isPortugal = function(obj) {
         var att = obj.attributes;
-        var street = Waze.model.streets.get(att.primaryStreetID);
+        var street = W.model.streets.get(att.primaryStreetID);
         var city = segment.model.cities.get(street.cityID);
         var countryId = city.countryID;
 
@@ -328,7 +328,7 @@ reusable code for all WME tools i'm building
 
         var action = [];
         action.push(new WazeActionUpdateObject(obj, attr));
-        Waze.model.actionManager.add(new WazeActionMultiAction(action));
+        W.model.actionManager.add(new WazeActionMultiAction(action));
     };
 
     /*
@@ -356,7 +356,7 @@ reusable code for all WME tools i'm building
         var attr = obj.attributes;
         var segStreetID = attr.primaryStreetID;
         if (segStreetID !== null && segStreetID !== -100) {
-            var street = Waze.model.streets.get(segStreetID);
+            var street = W.model.streets.get(segStreetID);
 
             if (!street)
                 return '';
@@ -391,6 +391,20 @@ reusable code for all WME tools i'm building
         return false;
 
     };
+
+
+    /*
+    	returns top city name
+    */
+    WMEutils.prototype.getTopCity = function() {
+        var topCityId = W.model.segments.topCityID;
+        var topCity;
+        if (topCityId) {
+            topCity = W.model.cities.get(topCityId);
+        }
+        
+        return topCity.attributes.name;
+    }
 
 
     /*
