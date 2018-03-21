@@ -13,6 +13,8 @@
 
 'use strict';
 
+var boo = false;
+
 // process operations
 var procO = function(os, bl, ob) {
     var l = os.length;
@@ -41,6 +43,11 @@ var procO = function(os, bl, ob) {
                 break;
         }
 
+        var dd = ob.daysSince;
+        dd = new Date(Date.now() - (dd *86400*1000));
+
+        dd = boo ? ("_ _ _ _ _ " + dd) : (dd + " _ _ _ _ _");
+
         var style = {
             strokeColor: ob.color,
             strokeOpacity: 0.5,
@@ -51,9 +58,10 @@ var procO = function(os, bl, ob) {
             fontColor: 'white',
             labelOutlineColor: ob.color,
             labelOutlineWidth: 4,
-            labelAlign: 'left',
-            label: ob.daysSince + "]" + aType + ":" + o.objectType
+            labelAlign: boo ? 'left' : 'right',
+            label: dd + "]" + aType + ":" + o.objectType
         };
+        boo = !boo;
 
         var imageFeature = new OpenLayers.Feature.Vector(point, null, style);
 
