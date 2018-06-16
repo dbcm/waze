@@ -427,7 +427,8 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.addMenuLayer = function(o) {
         // from WME Street View Availability
         var roadGroupSelector = document.getElementById('layer-switcher-group_' + o.section);
-        if (roadGroupSelector !== null) {
+        let magicItem = document.getElementById('layer-switcher-item_' + o.uid);
+        if (roadGroupSelector !== null && magicItem == null) {
             var roadGroup = roadGroupSelector.parentNode.parentNode.querySelector('.children');
             var toggler = document.createElement('li');
             var togglerContainer = document.createElement('div');
