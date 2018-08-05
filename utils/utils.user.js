@@ -105,7 +105,7 @@ reusable code for all WME tools i'm building
         var ret = {};
 
         for (var segId in W.model.segments.objects) {
-            var seg = W.model.segments.get(segId);
+            var seg = W.model.segments.getObjectById(segId);
 
             if (!this.isOnScreen(seg)) {
                 continue;
@@ -145,7 +145,7 @@ reusable code for all WME tools i'm building
         var ret = {};
 
         for (var venId in W.model.venues.objects) {
-            var ven = W.model.venues.get(venId);
+            var ven = W.model.venues.getObjectById(venId);
 
             if (!this.isOnScreen(ven)) {
                 continue;
@@ -175,7 +175,7 @@ reusable code for all WME tools i'm building
         var ret = {};
 
         for (var nodId in W.model.nodes.objects) {
-            var nod = W.model.nodes.get(nodId);
+            var nod = W.model.nodes.getObjectById(nodId);
 
             if (!this.isOnScreen(nod)) {
                 continue;
@@ -240,8 +240,8 @@ reusable code for all WME tools i'm building
       */
     WMEutils.prototype.isPortugal = function(obj) {
         var att = obj.attributes;
-        var street = W.model.streets.get(att.primaryStreetID);
-        var city = segment.model.cities.get(street.cityID);
+        var street = W.model.streets.getObjectById(att.primaryStreetID);
+        var city = segment.model.cities.getObjectById(street.cityID);
         var countryId = city.countryID;
 
         return countryId === 181;
@@ -364,7 +364,7 @@ reusable code for all WME tools i'm building
         var attr = obj.attributes;
         var segStreetID = attr.primaryStreetID;
         if (segStreetID !== null && segStreetID !== -100) {
-            var street = W.model.streets.get(segStreetID);
+            var street = W.model.streets.getObjectById(segStreetID);
 
             if (!street) return "";
 
@@ -404,7 +404,7 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.getTopCityName = function() {
         var topCityId = W.model.segments.topCityID;
         if (topCityId) {
-            var topCity = W.model.cities.get(topCityId);
+            var topCity = W.model.cities.getObjectById(topCityId);
             if (topCity) {
                 return topCity.attributes.name;
             }
