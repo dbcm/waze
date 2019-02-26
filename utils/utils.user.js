@@ -220,9 +220,10 @@ reusable code for all WME tools i'm building
                 obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) &&
                 !obj.hasClosures() &&
                 obj.isAllowed(obj.PERMISSIONS.EDIT_PROPERTIES)
-                //  &&
-                // !obj.isInBigJunction()
-            ); // || obj.isUpdated();
+            );
+        // || obj.isUpdated();
+        //  &&
+        // !obj.isInBigJunction()
         if (obj.type === "venue")
             return (
                 obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) &&
@@ -230,10 +231,11 @@ reusable code for all WME tools i'm building
             ); // || obj.isUpdated();
         if (obj.type === "node")
             return (!obj.isConnectedToBigJunction() &&
-                obj.areConnectionsEditable() &&
                 obj.isAllowedToMoveNode() &&
                 obj.isAllowed(obj.PERMISSIONS.DELETE)
-            ); // obj.isUpdated();
+            );
+        // obj.isUpdated();
+        // obj.areConnectionsEditable() &&
     };
 
     /*
