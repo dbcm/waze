@@ -8,6 +8,7 @@
 // @match        https://www.waze.com/*editor/*
 // @exclude      https://www.waze.com/*user/*editor/*
 // @grant        none
+// @downloadURL  https://raw.githubusercontent.com/dbcm/waze/master/utils/utils.user.js
 // ==/UserScript==
 
 /*
