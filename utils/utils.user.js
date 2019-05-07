@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.8
+// @version      1.0.9
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -218,22 +218,23 @@ reusable code for all WME tools i'm building
 
         if (obj.type === "segment")
             return (
-                obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) &&
+                obj.isAllowed(obj.permissionFlags.EDIT_GEOMETRY) &&
                 !obj.hasClosures() &&
-                obj.isAllowed(obj.PERMISSIONS.EDIT_PROPERTIES) &&
+                obj.isAllowed(obj.permissionFlags.EDIT_PROPERTIES) &&
                 !obj.isInBigJunction()
             ); // || obj.isUpdated();
         if (obj.type === "venue")
             return (
-                obj.isAllowed(obj.PERMISSIONS.EDIT_GEOMETRY) &&
+                obj.isAllowed(obj.permissionFlags.EDIT_GEOMETRY) &&
                 obj.areExternalProvidersEditable() &&
                 obj.isApproved()
+                // https://www.waze.com/editor/?env=row&lon=-8.70947&lat=39.04890&s=1161821655&zoom=6
             ); // || obj.isUpdated();
         if (obj.type === "node")
             return (!obj.isConnectedToBigJunction() &&
                 obj.areConnectionsEditable() &&
                 obj.isAllowedToMoveNode() &&
-                obj.isAllowed(obj.PERMISSIONS.DELETE)
+                obj.isAllowed(obj.permissionFlags.DELETE)
             ); // obj.isUpdated();
     };
 
