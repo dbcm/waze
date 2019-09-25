@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.9
+// @version      1.0.10
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -205,7 +205,11 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.isOnScreen = function(obj) {
         if (!obj) return false;
         if (obj.geometry) {
-            return W.map.getExtent().intersectsBounds(obj.geometry.getBounds());
+            if (obj.type == 'segment')
+                return W.map.getExtent().intersectsBounds(obj.getNodeByDirection('from').geometry.getBounds()) &&
+                    W.map.getExtent().intersectsBounds(obj.getNodeByDirection('to').geometry.getBounds());
+            else
+                return W.map.getExtent().intersectsBounds(obj.geometry.getBounds());
         }
         return false;
     };
@@ -438,9 +442,7 @@ reusable code for all WME tools i'm building
         );
         let magicItem = document.getElementById("layer-switcher-item_" + o.uid);
         if (roadGroupSelector !== null && magicItem == null) {
-            var roadGroup = roadGroupSelector.parentNode.parentNode.querySelector(
-                ".children"
-            );
+            var roadGroup = roadGroupSelector.parentNode.parentNode.parentNode.parentNode.children[1];
             var toggler = document.createElement("li");
             var togglerContainer = document.createElement("div");
             togglerContainer.className = "controls-container toggler";
