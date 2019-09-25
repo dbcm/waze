@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Waze Map Editor - Blame
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  show on WME what this users did in the last X days
 // @author       Delfim Machado - dbcm@profundos.org
-// @match        https://beta.waze.com/*editor/*
-// @match        https://www.waze.com/*editor/*
+// @include      /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
+// @run-at       document-end
 // @exclude      https://www.waze.com/*user/*editor/*
 // @grant        none
 // @require      https://dbcm.github.io/waze/utils/utils.user.js
@@ -28,7 +28,7 @@ var procO = function(os, bl, ob) {
         var coords = OpenLayers.Layer.SphericalMercator.forwardMercator(o.objectCentroid.coordinates[0], o.objectCentroid.coordinates[1]);
 
         var point = new OpenLayers.Geometry.Point(coords.lon, coords.lat);
-        var alertPx = Waze.map.getPixelFromLonLat(new OpenLayers.LonLat(coords.lon, coords.lat));
+        var alertPx = W.map.getPixelFromLonLat(new OpenLayers.LonLat(coords.lon, coords.lat));
 
         var aType = o.actionType;
         switch (o.actionType) {
@@ -44,9 +44,24 @@ var procO = function(os, bl, ob) {
         }
 
         var dd = ob.daysSince;
-        dd = new Date(Date.now() - (dd *86400*1000));
+        dd = new Date(Date.now() - (dd * 86400 * 1000));
 
-        dd = boo ? ("_ _ _ _ _ " + dd) : (dd + " _ _ _ _ _");
+        function appendLeadingZeroes(n) {
+            if (n <= 9) {
+                return "0" + n;
+            }
+            return n
+        }
+
+        dd =
+            appendLeadingZeroes(dd.getDate()) + "/" +
+            appendLeadingZeroes(dd.getMonth() + 1) + "/" +
+            dd.getFullYear() + " " +
+            appendLeadingZeroes(dd.getHours()) + ":" +
+            appendLeadingZeroes(dd.getMinutes()) + ":" +
+            appendLeadingZeroes(dd.getSeconds());
+
+        dd = boo ? ("← " + dd + "] " + aType + ":" + o.objectType) : (aType + ":" + o.objectType + " [" + dd + " →");
 
         var style = {
             strokeColor: ob.color,
@@ -59,7 +74,7 @@ var procO = function(os, bl, ob) {
             labelOutlineColor: ob.color,
             labelOutlineWidth: 4,
             labelAlign: boo ? 'left' : 'right',
-            label: dd + "]" + aType + ":" + o.objectType
+            label: dd
         };
         boo = !boo;
 
@@ -107,7 +122,7 @@ var procBlame = function(o, jsonData) {
     if (o.bl === undefined) {
 
         var blID = "__blame_" + o.uname;
-        var bl = Waze.map.getLayerByUniqueName(blID);
+        var bl = W.map.getLayerByUniqueName(blID);
         if (bl === undefined) {
             blameLayer = new OpenLayers.Layer.Vector("Blame " + o.uname, {
                 rendererOptions: {
@@ -120,8 +135,8 @@ var procBlame = function(o, jsonData) {
         }
 
         blameLayer.setZIndex(9999);
-        Waze.map.addLayer(blameLayer);
-        Waze.map.addControl(new OpenLayers.Control.DrawFeature(blameLayer, OpenLayers.Handler.Path));
+        W.map.addLayer(blameLayer);
+        W.map.addControl(new OpenLayers.Control.DrawFeature(blameLayer, OpenLayers.Handler.Path));
         blameLayer.setVisibility(true);
         blameLayer.destroyFeatures();
     } else {
@@ -142,7 +157,7 @@ var procBlame = function(o, jsonData) {
 var getTransactions = function(o) {
 
     if (o.uname === undefined)
-        o.uname = Waze.model.users.get(o.user).userName;
+        o.uname = W.model.users.getObjectById(o.user).userName;
 
     var opts = o.next ? '&till=' + o.next : '';
 
@@ -201,10 +216,10 @@ var doBlame = function(e) {
                 });
             }
             if (e.target.innerText === 'X') {
-                var user = Waze.model.users.get(e.target.value);
-                var bl = Waze.map.getLayerByUniqueName("__blame_" + user.userName);
+                var user = W.model.users.getObjectById(e.target.value);
+                var bl = W.map.getLayerByUniqueName("__blame_" + user.userName);
                 if (bl) {
-                    Waze.map.removeLayer(bl);
+                    W.map.removeLayer(bl);
                     var btn = document.getElementById("blame_" + e.target.value);
                     btn.style.color = null;
                 }
@@ -216,11 +231,11 @@ var doBlame = function(e) {
 };
 
 var resetBlame = function() {
-    for (var uid in Waze.model.users.objects) {
-        var user = Waze.model.users.get(uid);
-        var bl = Waze.map.getLayerByUniqueName("__blame_" + user.userName);
+    for (var uid in W.model.users.objects) {
+        var user = W.model.users.getObjectById(uid);
+        var bl = W.map.getLayerByUniqueName("__blame_" + user.userName);
         if (bl)
-            Waze.map.removeLayer(bl)
+            W.map.removeLayer(bl)
     }
 };
 
@@ -230,8 +245,8 @@ var refreshBlame = function() {
     t.style.width = '100%';
 
     blUT.innerHTML = "<table>";
-    for (var uid in Waze.model.users.objects) {
-        var user = Waze.model.users.get(uid);
+    for (var uid in W.model.users.objects) {
+        var user = W.model.users.getObjectById(uid);
         var tr = t.insertRow();
         var tdu = tr.insertCell();
         tdu.innerHTML = "<a target='_new' href='https://" + www + ".waze.com/user/editor/" + user.userName + "'>" + user.userName + "</a> (" + user.normalizedLevel + ")";
