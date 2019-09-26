@@ -445,7 +445,7 @@ reusable code for all WME tools i'm building
             var roadGroup = roadGroupSelector.parentNode.parentNode.parentNode.parentNode.children[1];
             var toggler = document.createElement("li");
             var togglerContainer = document.createElement("div");
-            togglerContainer.className = "controls-container toggler";
+            togglerContainer.className = "wz-checkbox";
             var checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.id = "layer-switcher-item_" + o.uid;
