@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.11
+// @version      1.0.12
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -103,7 +103,7 @@ reusable code for all WME tools i'm building
       	f = ARRAY of functions
       */
     WMEutils.prototype.loopSegments = function(f) {
-        var ret = {};
+        let ret = {};
 
         for (var segId in W.model.segments.objects) {
             var seg = W.model.segments.getObjectById(segId);
@@ -143,7 +143,7 @@ reusable code for all WME tools i'm building
       	f = ARRAY of functions
       */
     WMEutils.prototype.loopVenues = function(f) {
-        var ret = {};
+        let ret = {};
 
         for (var venId in W.model.venues.objects) {
             var ven = W.model.venues.getObjectById(venId);
@@ -173,7 +173,7 @@ reusable code for all WME tools i'm building
       	f = ARRAY of functions
       */
     WMEutils.prototype.loopNodes = function(f) {
-        var ret = {};
+        let ret = {};
 
         for (var nodId in W.model.nodes.objects) {
             var nod = W.model.nodes.getObjectById(nodId);
@@ -206,8 +206,11 @@ reusable code for all WME tools i'm building
         if (!obj) return false;
         if (obj.geometry) {
             if (obj.type == 'segment')
-                return W.map.getExtent().intersectsBounds(obj.getNodeByDirection('from').geometry.getBounds()) &&
-                    W.map.getExtent().intersectsBounds(obj.getNodeByDirection('to').geometry.getBounds());
+                return typeof obj.getFromNode().geometry == 'object' &&
+                    typeof obj.getToNode().geometry == 'object' &&
+                    W.map.getExtent().intersectsBounds(obj.geometry.getBounds());
+            // return W.map.getExtent().intersectsBounds(obj.getNodeByDirection('from').geometry.getBounds()) &&
+            //     W.map.getExtent().intersectsBounds(obj.getNodeByDirection('to').geometry.getBounds());
             else
                 return W.map.getExtent().intersectsBounds(obj.geometry.getBounds());
         }
@@ -368,7 +371,7 @@ reusable code for all WME tools i'm building
       	get road name
       */
     WMEutils.prototype.getRoadName = function(obj) {
-        var attr = obj.attributes;
+        let attr = obj.attributes;
         var segStreetID = attr.primaryStreetID;
         if (segStreetID !== null && segStreetID !== -100) {
             var street = W.model.streets.getObjectById(segStreetID);
@@ -383,7 +386,7 @@ reusable code for all WME tools i'm building
           returns 1, 2 or 3 based on segment direction
       */
     WMEutils.prototype.getDirection = function(obj) {
-        var attr = obj.attributes;
+        let attr = obj.attributes;
 
         var val = 0;
         if (attr.fwdDirection) val += 1;
