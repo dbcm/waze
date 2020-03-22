@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.12
+// @version      1.0.13
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -335,7 +335,16 @@ reusable code for all WME tools i'm building
         if (!this.doLog) return;
 
         var now = Date.now();
-        console.log("[" + this.app + "] " + now + " : " + msg);
+        console.log(
+            "%c[%c" + this.app + "%c] %c" + now + "%c : %c" + msg,
+            'color:gray',
+            'color:cyan',
+            'color:gray',
+            'color:red',
+            'color:pink',
+            'color:#d97e00'
+        );
+
     };
 
     /*
@@ -466,6 +475,30 @@ reusable code for all WME tools i'm building
             label.appendChild(labelText);
             togglerContainer.appendChild(label);
             toggler.appendChild(togglerContainer);
+            roadGroup.appendChild(toggler);
+        }
+    };
+
+    WMEutils.prototype.addMenuLayerBeta = function(o) {
+        let roadGroupSelector = document.getElementById(
+            "layer-switcher-group_" + o.section
+        );
+        let magicItem = document.getElementById("layer-switcher-item_" + o.uid);
+        if (roadGroupSelector !== null && magicItem == null) {
+            let roadGroup = document.getElementsByClassName('collapsible-GROUP_' + o.section.toUpperCase())[0];
+
+            let toggler = document.createElement("li");
+            toggler.addEventListener("click", function(e) {
+                o.layer.magicLayer.setVisibility(e.target.checked);
+            });
+
+            let wzCheckbox = document.createElement("wz-checkbox");
+            wzCheckbox.id = "layer-switcher-item_" + o.uid;
+            wzCheckbox.className = "hydrated";
+            wzCheckbox.checked = true;
+            wzCheckbox.innerHTML = o.name;
+
+            toggler.appendChild(wzCheckbox);
             roadGroup.appendChild(toggler);
         }
     };
