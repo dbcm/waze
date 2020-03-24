@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.13
+// @version      1.0.14
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -446,7 +446,7 @@ reusable code for all WME tools i'm building
           uid = internal id
           callback = function() {...}
           layer = OL Layer
-      */
+    */
     WMEutils.prototype.addMenuLayer = function(o) {
         // from WME Street View Availability
         var roadGroupSelector = document.getElementById(
@@ -502,6 +502,34 @@ reusable code for all WME tools i'm building
             roadGroup.appendChild(toggler);
         }
     };
+
+    /*
+      	get city name from segment
+    */
+    WMEutils.prototype.getCityName = function(obj) {
+        let cityName = undefined;
+
+        let street = W.model.streets.getObjectById(obj.attributes.primaryStreetID);
+        if (!street) {
+            return undefined;
+        }
+
+        let city = obj.model.cities.getObjectById(street.cityID);
+        if (city) {
+            cityName = city.attributes.name;
+        }
+
+        return cityName;
+    }
+
+
+    /*
+      	do this segments has tolls
+    */
+    WMEutils.prototype.hasToll = function(obj) {
+        return (obj.attributes.fwdToll == true || obj.attributes.revToll == true);
+    }
+
 
     root.WMEutils = WMEutils;
 })(window);
