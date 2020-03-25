@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.14
+// @version      1.0.15
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -489,7 +489,7 @@ reusable code for all WME tools i'm building
 
             let toggler = document.createElement("li");
             toggler.addEventListener("click", function(e) {
-                o.layer.magicLayer.setVisibility(e.target.checked);
+                o.layer.setVisibility(e.target.checked);
             });
 
             let wzCheckbox = document.createElement("wz-checkbox");
