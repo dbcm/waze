@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.15
+// @version      1.0.16
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -205,13 +205,21 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.isOnScreen = function(obj) {
         if (!obj) return false;
         if (obj.geometry) {
-            if (obj.type == 'segment')
-                return typeof obj.getFromNode().geometry == 'object' &&
-                    typeof obj.getToNode().geometry == 'object' &&
+            if (obj.type == 'segment') {
+                let fromN = obj.getFromNode();
+                let toN = obj.getToNode();
+
+                if (typeof fromN != 'object' || typeof toN != 'object') {
+                    console.log("Magic Utils PANIC: segID " + obj.id + " doesn't have nodes loaded!!!");
+                    return false;
+                }
+
+                return typeof fromN.geometry == 'object' &&
+                    typeof toN.geometry == 'object' &&
                     W.map.getExtent().intersectsBounds(obj.geometry.getBounds());
-            // return W.map.getExtent().intersectsBounds(obj.getNodeByDirection('from').geometry.getBounds()) &&
-            //     W.map.getExtent().intersectsBounds(obj.getNodeByDirection('to').geometry.getBounds());
-            else
+                // return W.map.getExtent().intersectsBounds(obj.getNodeByDirection('from').geometry.getBounds()) &&
+                //     W.map.getExtent().intersectsBounds(obj.getNodeByDirection('to').geometry.getBounds());
+            } else
                 return W.map.getExtent().intersectsBounds(obj.geometry.getBounds());
         }
         return false;
@@ -330,11 +338,11 @@ reusable code for all WME tools i'm building
       	log stuff
       */
     WMEutils.prototype.log = function(msg) {
-        var self = this;
+        let self = this;
 
         if (!this.doLog) return;
 
-        var now = Date.now();
+        let now = Date.now();
         console.log(
             "%c[%c" + this.app + "%c] %c" + now + "%c : %c" + msg,
             'color:gray',
