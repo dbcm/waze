@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.17
+// @version      1.0.18
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -168,6 +168,33 @@ reusable code for all WME tools i'm building
 
         return ret;
     };
+
+    /*
+      	f = ARRAY of functions
+      */
+    WMEutils.prototype.loopComments = function(f) {
+        let ret = {};
+
+        for (var venId in W.model.mapComments.objects) {
+            var ven = W.model.mapComments.getObjectById(venId);
+
+            if (!this.isOnScreen(ven)) {
+                continue;
+            }
+
+            var re = [];
+            for (var i = 0; i < f.length; i++) {
+                if (f[i]) {
+                    var r = f[i](ven);
+                    if (r && r.id) re.push(r);
+                }
+            }
+            if (re.length > 0) ret[ven.attributes.id] = re;
+        }
+
+        return ret;
+    };
+
 
     /*
       	f = ARRAY of functions
