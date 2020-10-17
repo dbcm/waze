@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.18
+// @version      1.0.19
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -71,7 +71,7 @@ reusable code for all WME tools i'm building
 
         var addon = document.createElement("div");
         addon.innerHTML +=
-            '<div><div class="side-panel-section"><h4>' + o.title + "</h4><br>";
+            '<div><div class="side-panel-section"><h6>' + o.title + "</h6>";
         addon.innerHTML += o.content;
         addon.innerHTML += "</div></div>";
 
