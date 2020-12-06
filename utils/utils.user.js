@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.19
+// @version      1.0.20
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -116,6 +116,10 @@ reusable code for all WME tools i'm building
                 continue;
             }
 
+            if (seg.isDeleted()) {
+                continue;
+            }
+
             var re = [];
             for (var i = 0; i < f.length; i++) {
                 if (f[i]) {
@@ -156,6 +160,10 @@ reusable code for all WME tools i'm building
                 continue;
             }
 
+            if (ven.isDeleted()) {
+                continue;
+            }
+
             var re = [];
             for (var i = 0; i < f.length; i++) {
                 if (f[i]) {
@@ -175,21 +183,25 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.loopComments = function(f) {
         let ret = {};
 
-        for (var venId in W.model.mapComments.objects) {
-            var ven = W.model.mapComments.getObjectById(venId);
+        for (var commId in W.model.mapComments.objects) {
+            var comm = W.model.mapComments.getObjectById(commId);
 
-            if (!this.isOnScreen(ven)) {
+            if (!this.isOnScreen(comm)) {
+                continue;
+            }
+
+            if (comm.isDeleted()) {
                 continue;
             }
 
             var re = [];
             for (var i = 0; i < f.length; i++) {
                 if (f[i]) {
-                    var r = f[i](ven);
+                    var r = f[i](comm);
                     if (r && r.id) re.push(r);
                 }
             }
-            if (re.length > 0) ret[ven.attributes.id] = re;
+            if (re.length > 0) ret[comm.attributes.id] = re;
         }
 
         return ret;
@@ -210,6 +222,10 @@ reusable code for all WME tools i'm building
             }
 
             if (!this.canEdit(nod)) {
+                continue;
+            }
+
+            if (nod.isDeleted()) {
                 continue;
             }
 
@@ -236,7 +252,7 @@ reusable code for all WME tools i'm building
                 let fromN = obj.getFromNode();
                 let toN = obj.getToNode();
 
-                if (typeof fromN != 'object' || typeof toN != 'object') {
+                if (_.isEmpty(fromN) || _.isEmpty(toN)) {
                     console.log("Magic Utils PANIC: segID " + obj.id + " doesn't have nodes loaded!!!");
                     return false;
                 }
