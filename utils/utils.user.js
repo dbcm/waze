@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.20
+// @version      1.0.21
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -472,7 +472,7 @@ reusable code for all WME tools i'm building
       	returns top city name
       */
     WMEutils.prototype.getTopCityName = function() {
-        var topCityId = W.model.segments.topCityID;
+        var topCityId = W.model.getTopCityId();
         if (topCityId) {
             var topCity = W.model.cities.getObjectById(topCityId);
             if (topCity) {
