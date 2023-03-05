@@ -75,7 +75,7 @@ reusable code for all WME tools i'm building
         addon.innerHTML += o.content;
         addon.innerHTML += "</div></div>";
 
-        var navTabs = document.getElementsByClassName("nav nav-tabs")[0];
+        var navTabs = document.getElementsByClassName("nav-tabs")[0];
         var tabContent = document.getElementsByClassName("tab-content")[0];
 
         var newtab = document.createElement("li");
