@@ -266,7 +266,7 @@ var refreshBlame = function() {
     blUT.innerHTML = "<table>";
     for (var uid in W.model.users.objects) {
         var user = W.model.users.getObjectById(uid);
-        if(user.attributes.rank > W.loginManager.user.attributes.rank || (W.loginManager.user.attributes.rank > 2 && abc))
+        if(user.attributes.rank > W.loginManager.user.attributes.rank || (user.attributes.rank > 2 && abc))
             continue;
         var tr = t.insertRow();
         var tdu = tr.insertCell();
