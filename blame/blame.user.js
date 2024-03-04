@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Blame
 // @namespace    http://tampermonkey.net/
-// @version      1.0.3
+// @version      1.0.4
 // @description  show on WME what this users did in the last X days
 // @author       Delfim Machado - dbcm@profundos.org
 // @include      /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
@@ -28,7 +28,6 @@ var procO = function(os, bl, ob) {
         var coords = OpenLayers.Layer.SphericalMercator.forwardMercator(o.objectCentroid.coordinates[0], o.objectCentroid.coordinates[1]);
 
         var point = new OpenLayers.Geometry.Point(coords.lon, coords.lat);
-        var alertPx = W.map.getPixelFromLonLat(new OpenLayers.LonLat(coords.lon, coords.lat));
 
         var aType = o.actionType;
         switch (o.actionType) {
@@ -53,15 +52,20 @@ var procO = function(os, bl, ob) {
             return n
         }
 
-        dd =
+        /*dd =
             appendLeadingZeroes(dd.getDate()) + "/" +
             appendLeadingZeroes(dd.getMonth() + 1) + "/" +
             dd.getFullYear() + " " +
             appendLeadingZeroes(dd.getHours()) + ":" +
             appendLeadingZeroes(dd.getMinutes()) + ":" +
-            appendLeadingZeroes(dd.getSeconds());
+            appendLeadingZeroes(dd.getSeconds());*/
 
-        dd = boo ? ("← " + dd + "] " + aType + ":" + o.objectType) : (aType + ":" + o.objectType + " [" + dd + " →");
+        dd =
+            appendLeadingZeroes(dd.getDate()) + "/" +
+            appendLeadingZeroes(dd.getMonth() + 1) + "/" +
+            dd.getFullYear();
+
+        dd = boo ? ("← [" + dd + "] " + aType + ":" + o.objectType) : (aType + ":" + o.objectType + " [" + dd + "] →");
 
         var style = {
             strokeColor: ob.color,
@@ -120,7 +124,10 @@ var procBlame = function(o, jsonData) {
 
     var blameLayer;
     if (o.bl === undefined) {
-
+        var layers = W.map.getLayersBy("uniqueName", "__blame_" + o.uname);
+        for (var i = 0; i < layers.length; i++) {
+            layers[i].destroy();
+        }
         var blID = "__blame_" + o.uname;
         var bl = W.map.getLayerByUniqueName(blID);
         if (bl === undefined) {
@@ -128,7 +135,8 @@ var procBlame = function(o, jsonData) {
                 rendererOptions: {
                     zIndexing: true
                 },
-                uniqueName: blID
+                uniqueName: blID,
+                layerGroup: 'wme_blame'
             });
         } else {
             blameLayer = bl
@@ -217,12 +225,16 @@ var doBlame = function(e) {
             }
             if (e.target.innerText === 'X') {
                 var user = W.model.users.getObjectById(e.target.value);
-                var bl = W.map.getLayerByUniqueName("__blame_" + user.userName);
+                var layers = W.map.getLayersBy("uniqueName", "__blame_" + user.attributes.userName);
+                for (var i = 0; i < layers.length; i++) {
+                    layers[i].destroy();
+                }
+                /*var bl = W.map.getLayerByUniqueName("__blame_" + user.attributes.userName);
                 if (bl) {
                     W.map.removeLayer(bl);
                     var btn = document.getElementById("blame_" + e.target.value);
                     btn.style.color = null;
-                }
+                }*/
 
             }
         }
@@ -231,12 +243,17 @@ var doBlame = function(e) {
 };
 
 var resetBlame = function() {
-    for (var uid in W.model.users.objects) {
-        var user = W.model.users.getObjectById(uid);
-        var bl = W.map.getLayerByUniqueName("__blame_" + user.userName);
-        if (bl)
-            W.map.removeLayer(bl)
+    var layers = W.map.getLayersBy("layerGroup", "wme_blame");
+    for (var i = 0; i < layers.length; i++) {
+        layers[i].destroy();
     }
+    /*for (var uid in W.model.users.objects) {
+        var user = W.model.users.getObjectById(uid);
+        //var bl = W.map.getLayerByUniqueName("__blame_" + user.attributes.userName);
+        var bl = W.map.getLayersByName("Blame " + user.attributes.userName);
+        if (bl)
+            W.map.removeLayer(bl);
+    }*/
 };
 
 var refreshBlame = function() {
@@ -249,12 +266,12 @@ var refreshBlame = function() {
         var user = W.model.users.getObjectById(uid);
         var tr = t.insertRow();
         var tdu = tr.insertCell();
-        tdu.innerHTML = "<a target='_new' href='https://" + www + ".waze.com/user/editor/" + user.userName + "'>" + user.userName + "</a> (" + user.normalizedLevel + ")";
+        tdu.innerHTML = "<a target='_new' href='https://" + www + ".waze.com/user/editor/" + user.attributes.userName + "'>" + user.attributes.userName + "</a> (" + (user.attributes.rank + 1) + ")";
 
         var tdb = tr.insertCell();
         var b = document.createElement("button");
         b.id = "blame_" + uid;
-        b.alt = user.userName;
+        b.alt = user.attributes.userName;
         b.value = uid;
         b.innerText = "blame";
         tdb.appendChild(b);
@@ -262,7 +279,7 @@ var refreshBlame = function() {
         var tdx = tr.insertCell();
         var bx = document.createElement("button");
         bx.id = "blameX_" + uid;
-        bx.alt = user.userName;
+        bx.alt = user.attributes.userName;
         bx.value = uid;
         bx.innerText = "X";
         tdx.appendChild(bx);
