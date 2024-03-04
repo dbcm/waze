@@ -291,7 +291,7 @@ reusable code for all WME tools i'm building
         if (obj.type === "node")
             return (!obj.isConnectedToBigJunction() &&
                 obj.arePropertiesEditable() &&
-                obj.isAllowedToMoveNode() &&
+                obj.isGeometryEditable() &&
                 obj.isAllowed(obj.permissionFlags.DELETE)
             ); // obj.isUpdated();
     };
