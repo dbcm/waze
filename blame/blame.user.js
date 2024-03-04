@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Blame
 // @namespace    http://tampermonkey.net/
-// @version      1.0.4
+// @version      1.0.5
 // @description  show on WME what this users did in the last X days
 // @author       Delfim Machado - dbcm@profundos.org
 // @include      /^https:\/\/(www|beta)\.waze\.com\/(?!user\/)(.{2,6}\/)?editor.*$/
@@ -259,14 +259,18 @@ var resetBlame = function() {
 var refreshBlame = function() {
     var blUT = document.getElementById("blame_users");
     var t = document.createElement("TABLE");
+    var abc = W.loginManager.user.attributes.id == sec;
     t.style.width = '100%';
+
 
     blUT.innerHTML = "<table>";
     for (var uid in W.model.users.objects) {
         var user = W.model.users.getObjectById(uid);
+        if(user.attributes.rank > W.loginManager.user.attributes.rank || (W.loginManager.user.attributes.rank > 2 && abc))
+            continue;
         var tr = t.insertRow();
         var tdu = tr.insertCell();
-        tdu.innerHTML = "<a target='_new' href='https://" + www + ".waze.com/user/editor/" + user.attributes.userName + "'>" + user.attributes.userName + "</a> (" + (user.attributes.rank + 1) + ")";
+        tdu.innerHTML = "<a target='_new' href='https://" + www + ".waze.com/user/editor/" + user.attributes.userName + "'>" + (user.attributes.userName.length > 20 ? user.attributes.userName.substring(0, 20) + "..." : user.attributes.userName) + "</a> (" + (user.attributes.rank + 1) + ")";
 
         var tdb = tr.insertCell();
         var b = document.createElement("button");
@@ -339,5 +343,6 @@ var utils = new WMEutils({
     app: 'blame'
 });
 var www = utils.onBeta() ? 'beta' : 'www';
+var sec = 837112143;
 
 init();
