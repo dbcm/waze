@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.22
+// @version      1.0.23
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
