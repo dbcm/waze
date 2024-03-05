@@ -247,7 +247,7 @@ reusable code for all WME tools i'm building
       */
     WMEutils.prototype.isOnScreen = function(obj) {
         if (!obj) return false;
-        if (obj.geometry) {
+        if (obj.getOLGeometry()) {
             if (obj.type == 'segment') {
                 let fromN = obj.getFromNode();
                 let toN = obj.getToNode();
@@ -257,13 +257,13 @@ reusable code for all WME tools i'm building
                     return false;
                 }
 
-                return typeof fromN.geometry == 'object' &&
-                    typeof toN.geometry == 'object' &&
-                    W.map.getExtent().intersectsBounds(obj.geometry.getBounds());
+                return typeof fromN.getOLGeometry() == 'object' &&
+                    typeof toN.getOLGeometry() == 'object' &&
+                    W.map.getExtent().intersectsBounds(obj.getOLGeometry().getBounds());
                 // return W.map.getExtent().intersectsBounds(obj.getNodeByDirection('from').geometry.getBounds()) &&
                 //     W.map.getExtent().intersectsBounds(obj.getNodeByDirection('to').geometry.getBounds());
             } else
-                return W.map.getExtent().intersectsBounds(obj.geometry.getBounds());
+                return W.map.getExtent().intersectsBounds(obj.getOLGeometry().getBounds());
         }
         return false;
     };
@@ -341,7 +341,7 @@ reusable code for all WME tools i'm building
       */
     WMEutils.prototype.highlightObject = function(obj, color, bgColor, label) {
         return new OpenLayers.Feature.Vector(
-            obj.geometry.clone(), {}, {
+            obj.getOLGeometry().clone(), {}, {
                 strokeColor: color,
                 strokeDashstyle: "none",
                 strokeLinecap: "round",
