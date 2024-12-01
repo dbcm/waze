@@ -102,11 +102,10 @@ reusable code for all WME tools i'm building
     /*
       	f = ARRAY of functions
       */
-    WMEutils.prototype.loopSegments = function(f) {
+    WMEutils.prototype.loopSegments = function(wmeSDK, f) {
         let ret = {};
 
-        for (var segId in W.model.segments.objects) {
-            var seg = W.model.segments.getObjectById(segId);
+        for (var seg in wmeSDK.DataModel.Segments.getAll()) {
 
             if (!this.isOnScreen(seg)) {
                 continue;
@@ -146,11 +145,10 @@ reusable code for all WME tools i'm building
     /*
       	f = ARRAY of functions
       */
-    WMEutils.prototype.loopVenues = function(f) {
+    WMEutils.prototype.loopVenues = function(wmeSDK, f) {
         let ret = {};
 
-        for (var venId in W.model.venues.objects) {
-            var ven = W.model.venues.getObjectById(venId);
+        for (var ven in wmeSDK.DataModel.Venues.getAll()) {
 
             if (!this.isOnScreen(ven)) {
                 continue;
@@ -180,11 +178,10 @@ reusable code for all WME tools i'm building
     /*
       	f = ARRAY of functions
       */
-    WMEutils.prototype.loopComments = function(f) {
+    WMEutils.prototype.loopComments = function(wmeSDK, f) {
         let ret = {};
 
-        for (var commId in W.model.mapComments.objects) {
-            var comm = W.model.mapComments.getObjectById(commId);
+        for (var comm in wmeSDK.DataModel.MapComments.getAll()) {
 
             if (!this.isOnScreen(comm)) {
                 continue;
@@ -211,11 +208,10 @@ reusable code for all WME tools i'm building
     /*
       	f = ARRAY of functions
       */
-    WMEutils.prototype.loopNodes = function(f) {
+    WMEutils.prototype.loopNodes = function(wmeSDK, f) {
         let ret = {};
 
-        for (var nodId in W.model.nodes.objects) {
-            var nod = W.model.nodes.getObjectById(nodId);
+        for (var nod in wmeSDK.DataModel.Nodes.getAll()) {
 
             if (!this.isOnScreen(nod)) {
                 continue;
@@ -471,13 +467,10 @@ reusable code for all WME tools i'm building
     /*
       	returns top city name
       */
-    WMEutils.prototype.getTopCityName = function() {
-        var topCityId = W.model.getTopCityId();
+    WMEutils.prototype.getTopCityName = function(wmeSDK) {
+        var topCityId = wmeSDK.DataModel.Cities.getTopCity();
         if (topCityId) {
-            var topCity = W.model.cities.getObjectById(topCityId);
-            if (topCity) {
-                return topCity.attributes.name;
-            }
+            return topCity.name;
         }
         return null;
     };
@@ -557,15 +550,15 @@ reusable code for all WME tools i'm building
     /*
       	get city name from segment
     */
-    WMEutils.prototype.getCityName = function(obj) {
+    WMEutils.prototype.getCityName = function(wmeSDK, obj) {
         let cityName = undefined;
 
-        let street = W.model.streets.getObjectById(obj.attributes.primaryStreetID);
+        let street = wmeSDK.DataModel.Streets.getById({streetId: obj.attributes.primaryStreetID});
         if (!street) {
             return undefined;
         }
 
-        let city = obj.model.cities.getObjectById(street.cityID);
+        let city = wmeSDK.DataModel.Cities.getById({cityId: street.attributes.cityID});
         if (city) {
             cityName = city.attributes.name;
         }
