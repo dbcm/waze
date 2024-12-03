@@ -296,7 +296,7 @@ reusable code for all WME tools i'm building
       	is this object in Portugal
       */
     WMEutils.prototype.isPortugal = function(obj) {
-        var att = obj.attributes;
+        var att = obj;
         var street = W.model.streets.getObjectById(att.primaryStreetID);
         var city = segment.model.cities.getObjectById(street.cityID);
         var countryId = city.countryID;
@@ -323,7 +323,7 @@ reusable code for all WME tools i'm building
         if (obj.type === "segment") {
             var drivable = [1, 2, 3, 4, 6, 7, 8, 17, 15, 20];
 
-            if (drivable.includes(obj.attributes.roadType)) {
+            if (drivable.includes(obj.roadType)) {
                 return true;
             }
         }
@@ -410,10 +410,10 @@ reusable code for all WME tools i'm building
       	get normalized lock rank
       */
     WMEutils.prototype.getLockRank = function(obj) {
-        var rank = obj.attributes.lockRank;
+        var rank = obj.lockRank;
 
         // support for the automatic lock
-        if (obj.attributes.rank > rank) rank = obj.attributes.rank;
+        if (obj.rank > rank) rank = obj.rank;
 
         if (!rank) {
             rank = 1;
@@ -427,7 +427,7 @@ reusable code for all WME tools i'm building
       	get road name
       */
     WMEutils.prototype.getRoadName = function(obj) {
-        let attr = obj.attributes;
+        let attr = obj;
         var segStreetID = attr.primaryStreetID;
         if (segStreetID !== null && segStreetID !== -100) {
             var street = W.model.streets.getObjectById(segStreetID);
@@ -442,7 +442,7 @@ reusable code for all WME tools i'm building
           returns 1, 2 or 3 based on segment direction
       */
     WMEutils.prototype.getDirection = function(obj) {
-        let attr = obj.attributes;
+        let attr = obj;
 
         var val = 0;
         if (attr.fwdDirection) val += 1;
@@ -457,8 +457,8 @@ reusable code for all WME tools i'm building
       */
     WMEutils.prototype.isRoundabout = function(seg) {
         if (
-            seg.attributes.junctionID !== null &&
-            seg.attributes.junctionID !== undefined
+            seg.junctionID !== null &&
+            seg.junctionID !== undefined
         )
             return true;
         return false;
@@ -553,12 +553,12 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.getCityName = function(wmeSDK, obj) {
         let cityName = undefined;
 
-        let street = wmeSDK.DataModel.Streets.getById({streetId: obj.attributes.primaryStreetID});
+        let street = wmeSDK.DataModel.Streets.getById({streetId: obj.primaryStreetID});
         if (!street) {
             return undefined;
         }
 
-        let city = wmeSDK.DataModel.Cities.getById({cityId: street.attributes.cityID});
+        let city = wmeSDK.DataModel.Cities.getById({cityId: street.cityID});
         if (city) {
             cityName = city.attributes.name;
         }
@@ -571,7 +571,7 @@ reusable code for all WME tools i'm building
       	do this segments has tolls
     */
     WMEutils.prototype.hasToll = function(obj) {
-        return (obj.attributes.fwdToll == true || obj.attributes.revToll == true);
+        return (obj.fwdToll == true || obj.revToll == true);
     }
 
 
