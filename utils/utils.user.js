@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Waze Map Editor - Utils
 // @namespace    http://tampermonkey.net/
-// @version      1.0.23
+// @version      1.0.24
 // @description  set of utils to speed development
 // @author       Delfim Machado - dbcm@profundos.org
 // @match        https://beta.waze.com/*editor/*
@@ -107,9 +107,9 @@ reusable code for all WME tools i'm building
 
         for (var seg in wmeSDK.DataModel.Segments.getAll()) {
 
-            if (!this.isOnScreen(seg)) {
+            /*if (!this.isOnScreen(seg)) {
                 continue;
-            }
+            }*/
 
             if (!this.canEdit(seg)) {
                 continue;
@@ -150,9 +150,9 @@ reusable code for all WME tools i'm building
 
         for (var ven in wmeSDK.DataModel.Venues.getAll()) {
 
-            if (!this.isOnScreen(ven)) {
+            /*if (!this.isOnScreen(ven)) {
                 continue;
-            }
+            }*/
 
             if (!this.canEdit(ven)) {
                 continue;
@@ -183,9 +183,9 @@ reusable code for all WME tools i'm building
 
         for (var comm in wmeSDK.DataModel.MapComments.getAll()) {
 
-            if (!this.isOnScreen(comm)) {
+            /*if (!this.isOnScreen(comm)) {
                 continue;
-            }
+            }*/
 
             if (comm.isDeleted()) {
                 continue;
@@ -213,9 +213,9 @@ reusable code for all WME tools i'm building
 
         for (var nod in wmeSDK.DataModel.Nodes.getAll()) {
 
-            if (!this.isOnScreen(nod)) {
+            /*if (!this.isOnScreen(nod)) {
                 continue;
-            }
+            }*/
 
             if (!this.canEdit(nod)) {
                 continue;
