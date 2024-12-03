@@ -111,13 +111,13 @@ reusable code for all WME tools i'm building
                 continue;
             }*/
 
-            if (!this.canEdit(seg)) {
+            /*if (!this.canEdit(seg)) {
                 continue;
-            }
+            }*/
 
-            if (seg.isDeleted()) {
+            /*if (seg.isDeleted()) {
                 continue;
-            }
+            }*/
 
             var re = [];
             for (var i = 0; i < f.length; i++) {
@@ -154,13 +154,13 @@ reusable code for all WME tools i'm building
                 continue;
             }*/
 
-            if (!this.canEdit(ven)) {
+            /*if (!this.canEdit(ven)) {
                 continue;
-            }
+            }*/
 
-            if (ven.isDeleted()) {
+            /*if (ven.isDeleted()) {
                 continue;
-            }
+            }*/
 
             var re = [];
             for (var i = 0; i < f.length; i++) {
@@ -187,9 +187,9 @@ reusable code for all WME tools i'm building
                 continue;
             }*/
 
-            if (comm.isDeleted()) {
+            /*if (comm.isDeleted()) {
                 continue;
-            }
+            }*/
 
             var re = [];
             for (var i = 0; i < f.length; i++) {
@@ -217,13 +217,13 @@ reusable code for all WME tools i'm building
                 continue;
             }*/
 
-            if (!this.canEdit(nod)) {
+            /*if (!this.canEdit(nod)) {
                 continue;
-            }
+            }*/
 
-            if (nod.isDeleted()) {
+            /*if (nod.isDeleted()) {
                 continue;
-            }
+            }*/
 
             var re = [];
             for (var i = 0; i < f.length; i++) {
