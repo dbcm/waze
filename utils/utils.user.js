@@ -105,7 +105,7 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.loopSegments = function(wmeSDK, f) {
         let ret = {};
 
-        for (var seg in wmeSDK.DataModel.Segments.getAll()) {
+        for (var seg of wmeSDK.DataModel.Segments.getAll()) {
 
             /*if (!this.isOnScreen(seg)) {
                 continue;
@@ -148,7 +148,7 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.loopVenues = function(wmeSDK, f) {
         let ret = {};
 
-        for (var ven in wmeSDK.DataModel.Venues.getAll()) {
+        for (var ven of wmeSDK.DataModel.Venues.getAll()) {
 
             /*if (!this.isOnScreen(ven)) {
                 continue;
@@ -181,7 +181,7 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.loopComments = function(wmeSDK, f) {
         let ret = {};
 
-        for (var comm in wmeSDK.DataModel.MapComments.getAll()) {
+        for (var comm of wmeSDK.DataModel.MapComments.getAll()) {
 
             /*if (!this.isOnScreen(comm)) {
                 continue;
@@ -211,7 +211,7 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.loopNodes = function(wmeSDK, f) {
         let ret = {};
 
-        for (var nod in wmeSDK.DataModel.Nodes.getAll()) {
+        for (var nod of wmeSDK.DataModel.Nodes.getAll()) {
 
             /*if (!this.isOnScreen(nod)) {
                 continue;
