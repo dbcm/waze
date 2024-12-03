@@ -136,7 +136,7 @@ reusable code for all WME tools i'm building
                     }
                 }
             }
-            if (re.length > 0) ret[seg.attributes.id] = re;
+            if (re.length > 0) ret[seg.id] = re;
         }
 
         return ret;
@@ -169,7 +169,7 @@ reusable code for all WME tools i'm building
                     if (r && r.id) re.push(r);
                 }
             }
-            if (re.length > 0) ret[ven.attributes.id] = re;
+            if (re.length > 0) ret[ven.id] = re;
         }
 
         return ret;
@@ -198,7 +198,7 @@ reusable code for all WME tools i'm building
                     if (r && r.id) re.push(r);
                 }
             }
-            if (re.length > 0) ret[comm.attributes.id] = re;
+            if (re.length > 0) ret[comm.id] = re;
         }
 
         return ret;
@@ -232,7 +232,7 @@ reusable code for all WME tools i'm building
                     if (r && r.id) re.push(r);
                 }
             }
-            if (re.length > 0) ret[nod.attributes.id] = re;
+            if (re.length > 0) ret[nod.id] = re;
         }
 
         return ret;
