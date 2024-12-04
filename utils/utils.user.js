@@ -297,9 +297,9 @@ reusable code for all WME tools i'm building
       */
     WMEutils.prototype.isPortugal = function(obj) {
         var att = obj;
-        var street = W.model.streets.getObjectById(att.primaryStreetID);
-        var city = segment.model.cities.getObjectById(street.cityID);
-        var countryId = city.countryID;
+        var street = W.model.streets.getObjectById(att.primaryStreetId);
+        var city = segment.model.cities.getObjectById(street.cityId);
+        var countryId = city.countryId;
 
         return countryId === 181;
     };
@@ -553,14 +553,14 @@ reusable code for all WME tools i'm building
     WMEutils.prototype.getCityName = function(wmeSDK, obj) {
         let cityName = undefined;
 
-        let street = wmeSDK.DataModel.Streets.getById({streetId: obj.primaryStreetID});
+        let street = wmeSDK.DataModel.Streets.getById({streetId: obj.primaryStreetId});
         if (!street) {
             return undefined;
         }
 
-        let city = wmeSDK.DataModel.Cities.getById({cityId: street.cityID});
+        let city = wmeSDK.DataModel.Cities.getById({cityId: street.cityId});
         if (city) {
-            cityName = city.attributes.name;
+            cityName = city.name;
         }
 
         return cityName;
